@@ -11,16 +11,11 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-int	ft_is_full(t_philo philo, int full, pthread_mutex_t *print_mut)
+int	ft_is_full(t_philo *philo)
 {
-	if (full == *philo.data_arr[must_eat] + 1)
+	if (philo->eat_count == 0)
 	{
-		pthread_mutex_lock(print_mut);
-		return (full * -2);
-	}
-	if (philo.eat_count == *philo.data_arr[must_eat] + 1)
-	{
-		philo.eat_count = -1;
+		philo->full = -1;
 		return (1);
 	}
 	return (0);
@@ -50,24 +45,26 @@ pthread_mutex_t *print_mut)
 	int				i;
 	int				is_dead;
 	int				full;
+	int				philo_nbr;
 
 	full = 0;
 	i = 0;
-	is_dead = 0;
-	while (i < *philo[i].data_arr[num_of_philos])
+	philo_nbr = *philo[0].data_arr[num_of_philos];
+	while (1)
 	{
+		if (i == philo_nbr)
+			i = 0;
 		is_dead = ft_dead_philo_check(philo[i], dead_mut, print_mut);
 		if (is_dead == -1)
 			return (0);
 		pthread_mutex_lock(dead_mut);
-		if (*philo[i].data_arr[must_eat] != -1 && philo[i].eat_count != -1)
-			full += ft_is_full(philo[i], full, print_mut);
+		if (*philo[i].data_arr[must_eat] != -1 && philo[i].full == 0)
+			full += ft_is_full(&philo[i]);
+		if (full == philo_nbr)
+			return (0);
 		pthread_mutex_unlock(dead_mut);
 		pthread_mutex_unlock(print_mut);
-		if (full < 0)
-			return (0);
 		i++;
-		i = 0;
 	}
 	return (1);
 }

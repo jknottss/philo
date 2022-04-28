@@ -29,6 +29,7 @@ typedef struct s_philo {
 	pthread_mutex_t	*print_mut;
 	int				left_fork;
 	int				right_fork;
+	int				full;
 }	t_philo;
 
 enum e_philo_data {
@@ -43,7 +44,7 @@ int				ft_dead_philo_check(t_philo philo, pthread_mutex_t *dead_mut, \
 pthread_mutex_t *print_mut);
 int				ft_is_dead(t_philo *philo, pthread_mutex_t *dead_mut, \
 pthread_mutex_t *print_mut);
-int				ft_is_full(t_philo philo, int full, pthread_mutex_t *print_mut);
+int				ft_is_full(t_philo *philo);
 int				ft_init_app(int *data, int nums_philos, pthread_t *thread);
 int				ft_start_and_check(pthread_t *thread, t_philo *philo, \
 pthread_mutex_t *print_mut, pthread_mutex_t *dead_mut);

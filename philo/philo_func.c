@@ -18,7 +18,7 @@ void	*ft_philo(void *data)
 
 	philo = (t_philo *) data;
 	if (philo->philo_nbr % 2 == 0)
-		ft_usleep(10);
+		ft_usleep(5);
 	while (1)
 	{
 		ft_take_fork(philo);
@@ -51,7 +51,7 @@ void	ft_eat(t_philo *philo)
 	res = gettimeofday(&eating, 0);
 	philo->last_eating = ((eating.tv_sec * 1000) + \
 			(eating.tv_usec / 1000));
-	philo->eat_count++;
+	philo->eat_count--;
 	pthread_mutex_unlock(philo->dead_mut);
 	ft_usleep(*(philo)->data_arr[time_to_eat]);
 }

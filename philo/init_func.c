@@ -16,18 +16,21 @@ pthread_mutex_t *print_mut, pthread_mutex_t *dead_mut)
 {
 	int	i;
 	int	nums_philo;
+	int	time_sleep;
 
+	time_sleep = *philo[0].data_arr[time_to_die];
 	nums_philo = *philo[0].data_arr[num_of_philos];
 	i = 0;
-	ft_usleep(1);
 	while (i < nums_philo)
 	{
 		philo[i].last_eating = 0;
+		philo[i].full = 0;
 		pthread_create(&thread[i], 0, ft_philo, &philo[i]);
 		pthread_detach(thread[i]);
 		i++;
 	}
 	i = 1;
+	ft_usleep(time_sleep);
 	while (1)
 	{
 		while (i)
@@ -75,7 +78,7 @@ pthread_mutex_t *print_mut)
 		philos[i].start_prog = time;
 		philos[i].dead_mut = dead_mut;
 		philos[i].print_mut = print_mut;
-		philos[i].eat_count = 0;
+		philos[i].eat_count = data[must_eat];
 		i++;
 	}
 	return (philos);
